@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-    <title>古琴-正调定弦</title>
+    <title>音准测试</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -30,31 +30,33 @@
     <script src="lib/app.js"></script>
 
     <script>
-        const guqin_nomal = [
-            ['C ', '一', '弦', 65.41],
-            ['D ', '二', '弦', 73.42],
-            ['F ', '三', '弦', 87.31],
-            ['G ', '四', '弦', 98],
-            ['A ', '五', '弦', 110],
-            ['C', '六', '弦', 130.81],
-            ['D', '七', '弦', 146.83]
-        ]
-
-        const notes = guqin_nomal.map((item, index) => {
-            return {
-                name: item[0],
-                upper: item[1],
-                lower: item[2],
-                frequency: item[3],
-                cents: 0,
-                value: index
+        const piano_notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+        const middleA = 440
+        const middleAIndex = 57 // A4 12*4 + 9
+        const notes = []
+        const step = Math.pow(2, 1 / 12)
+        for (let i = 1; i < 9; i++) {
+            for (let j = 0; j < piano_notes.length; j++) {
+                var item = piano_notes[j];
+                var index = i * 12 + j
+                var frequency = middleA * Math.pow(step, index - middleAIndex)
+                notes.push({
+                    name: item[0],
+                    upper: item[1] || '',
+                    lower: i,
+                    frequency: frequency,
+                    cents: 0,
+                    value: index
+                })
             }
-        })
 
+        }
+
+        console.log(notes)
 
         const app = new Application()
 
-        app.notes.allowPlay = false
+        app.notes.allowPlay = true
 
         app.notes.setNotes(notes)
 
